@@ -1,0 +1,77 @@
+﻿@page "/Producto"
+@using BlazorApp_Act17.Shared.Clases;
+@inject HttpClient _http
+@inject NavigationManager navegar
+
+<h3>Lista de Productos</h3>
+
+<button class="btn btn-primary" @onclick="Agregar">Nuevo Producto<span class="oi oi-plus mx-2"></span></button>
+
+@if (Obtener == null)
+{
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading ...</span>
+    </div>
+}else if (Obtener.Count==0)
+{
+    <h1>No existe ningun registro en Proveedores</h1>
+}else{
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Cantidad</th>
+            <th>Proveedor</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var elProducto in Obtener)
+        {
+            <tr>
+
+                <td>@elProducto.Id</td>
+                <td>@elProducto.Nombre</td>
+                <td>@elProducto.Cantidad</td>
+                <td>@elProducto.ProveedoresId</td>
+
+                <td>
+                        <button class="btn-danger mx-3" @onclick="(()=>Eliminar(elProducto.Id))"><span class="oi oi-trash"></span></button>
+                        <button class="btn-secondary" @onclick="(()=>Modificar(elProducto.Id))"><span class=" oi oi-pencil"></span></button>
+                </td>
+
+
+            </tr>
+        }
+    </tbody>
+</table>
+}
+
+@code {
+    //private List<Proveedores> Obtener = new List<Proveedores>();
+    private List<Productos> Obtener;
+    // protected override async Task OnInitializedAsync() => Obtener = await _http.GetFromJsonAsync<List<Proveedores>>("https://localhost:7148/api/Primer");
+    protected override async Task OnInitializedAsync()
+    {
+        Obtener = await _http.GetFromJsonAsync<List<Productos>>("api/productos");
+    }
+
+    private void Agregar()
+    {
+        navegar.NavigateTo("/Producto/Apartado_Productos");
+    }
+
+    private void Modificar(int id)
+    {
+        navegar.NavigateTo($"/Producto/Editar_Producto/{id}");
+    }
+
+    private async void Eliminar(int id)
+    {
+        await _http.DeleteAsync($"api/Productos/{id}");
+        //Obtener.Remove(id);
+        Obtener = await _http.GetFromJsonAsync<List<Productos>>("api/Productos");
+        StateHasChanged();
+    }
+}

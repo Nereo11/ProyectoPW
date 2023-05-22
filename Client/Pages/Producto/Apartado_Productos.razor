@@ -1,0 +1,46 @@
+﻿@page "/Producto/Apartado_Productos"
+@inject HttpClient _http
+@using BlazorApp_Act17.Shared.Clases
+@inject NavigationManager navegar
+
+<h3>Apartado_Productos</h3>
+<EditForm Model="elProducto" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+
+    <div class="mb-3">
+        <label for="nombre" class="form-label">Nombre</label>
+        <InputText id="nombre" class="form-control" @bind-Value="elProducto.Nombre" />
+        <ValidationMessage For="(()=>elProducto.Nombre)" />
+    </div>
+    <div class="mb-3">
+        <label for="cantidad" class="form-label">Cantidad</label>
+        <InputNumber class="form-control" id="cantidad" @bind-Value="elProducto.Cantidad" />
+        <ValidationMessage For="(()=>elProducto.Cantidad)" />
+    </div>
+    <div class="mb-3">
+        <label for="telefono" class="form-label">Proveedor</label>
+        <InputNumber class="form-control" id="telefono" @bind-Value="elProducto.ProveedoresId" />
+        <ValidationMessage For="(()=>elProducto.ProveedoresId)" />
+    </div>
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <button type="button" @onclick="Cancelar" class="btn btn-primary">Cancelar</button>
+
+</EditForm>
+
+@code {
+    private Productos elProducto = new();
+
+    private async void Guardar()
+
+    {
+        await _http.PostAsJsonAsync("api/producto", elProducto);
+        navegar.NavigateTo("/Producto");
+    }
+
+    private async void Cancelar()
+
+    {
+        await _http.PostAsJsonAsync("api/producto", elProducto);
+        navegar.NavigateTo("/Producto");
+    }
+}

@@ -1,0 +1,79 @@
+﻿@page "/Proveedor"
+@using BlazorApp_Act17.Shared.Clases;
+@inject HttpClient _http
+@inject NavigationManager navegar
+
+<h3>Lista de Proveedores</h3>
+
+<button class="btn btn-primary" @onclick="Agregar">Nuevo Proveedor<span class="oi oi-plus mx-2"></span></button>
+
+@if (Obtener == null)
+{
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading ...</span>
+    </div>
+}else if (Obtener.Count==0)
+{
+    <h1>No existe ningun registro en Proveedores</h1>
+}else{
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Dirección</th>
+            <th>Correo</th>
+            <th>Telefono</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var elProveedor in Obtener)
+        {
+            <tr>
+
+                <td>@elProveedor.Id</td>
+                <td>@elProveedor.Nombre</td>
+                <td>@elProveedor.Dirección</td>
+                <td>@elProveedor.Correo</td>
+                <td>@elProveedor.Telefono</td>
+
+                <td>
+                        <button class="btn-danger mx-3" @onclick="(()=>Eliminar(elProveedor.Id))"><span class="oi oi-trash"></span></button>
+                        <button class="btn-secondary" @onclick="(()=>Modificar(elProveedor.Id))"><span class=" oi oi-pencil"></span></button>
+                </td>
+
+
+            </tr>
+        }
+    </tbody>
+</table>
+}
+
+@code {
+    //private List<Proveedores> Obtener = new List<Proveedores>();
+    private List<Proveedores> Obtener;
+    // protected override async Task OnInitializedAsync() => Obtener = await _http.GetFromJsonAsync<List<Proveedores>>("https://localhost:7148/api/Primer");
+    protected override async Task OnInitializedAsync()
+    {
+        Obtener = await _http.GetFromJsonAsync<List<Proveedores>>("api/proveedores");
+    }
+
+    private void Agregar()
+    {
+        navegar.NavigateTo("/Proveedor/Apartado_Proveedores");
+    }
+
+    private void Modificar(int id)
+    {
+        navegar.NavigateTo($"/Proveedor/Editar_Proveedor/{id}");
+    }
+
+    private async void Eliminar(int id)
+    {
+        await _http.DeleteAsync($"api/Proveedores/{id}");
+        //Obtener.Remove(id);
+        Obtener = await _http.GetFromJsonAsync<List<Proveedores>>("api/Proveedores");
+        StateHasChanged();
+    }
+}

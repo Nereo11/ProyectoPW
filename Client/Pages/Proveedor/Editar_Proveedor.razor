@@ -1,0 +1,62 @@
+﻿@page "/Proveedor/Editar_Proveedor/{Id:int}"
+@inject HttpClient _http
+@using BlazorApp_Act17.Shared.Clases
+@inject NavigationManager navegar
+
+<h3>Editar Proveedor</h3>
+<EditForm Model="elProveedor" OnValidSubmit="Modificar">
+    <DataAnnotationsValidator />
+
+    <div class="mb-3">
+        <label for="nombre" class="form-label">Nombre</label>
+        <InputText id="nombre" class="form-control" @bind-Value="elProveedor.Nombre" />
+        <ValidationMessage For="(()=>elProveedor.Nombre)" />
+    </div>
+    <div class="mb-3">
+        <label for="correo" class="form-label">Dirección</label>
+        <InputText class="form-control" id="direccion" @bind-Value="elProveedor.Dirección" />
+        <ValidationMessage For="(()=>elProveedor.Dirección)" />
+    </div>
+    <div class="mb-3">
+        <label for="correo" class="form-label">Correo</label>
+        <InputText class="form-control" id="correo" @bind-Value="elProveedor.Correo" />
+        <ValidationMessage For="(()=>elProveedor.Correo)" />
+    </div>
+    <div class="mb-3">
+        <label for="telefono" class="form-label">Teléfono</label>
+        <InputText class="form-control" id="telefono" @bind-Value="elProveedor.Telefono" />
+        <ValidationMessage For="(()=>elProveedor.Telefono)" />
+    </div>
+    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+
+    <button type="button" @onclick="Cancelar" class="btn btn-primary">Cancelar</button>
+
+</EditForm>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private Proveedores elProveedor = new Proveedores();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        elProveedor = await _http.GetFromJsonAsync<Proveedores>($"api/proveedores/{Id}");
+    }
+
+
+    private async void Modificar()
+
+    {
+        await _http.PutAsJsonAsync($"api/proveedores/{Id}", elProveedor);
+        navegar.NavigateTo("/Proveedor");
+    }
+
+    private void Cancelar()
+
+    {
+        //await _http.PostAsJsonAsync("api/proveedores", elProveedor);
+        navegar.NavigateTo("/Proveedor");
+    }
+}
