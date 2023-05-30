@@ -23,7 +23,7 @@ namespace BlazorApp_Act17.Shared.Clases
 
         [Required(ErrorMessage = "El Proveedor no puede ser vació")]
 
-        public int? ProveedoresId { get; set; }
+        public int ProveedoresId { get; set; }
         public virtual Proveedores? Proveedor { get; set; }
 
         [JsonIgnore]

@@ -4,6 +4,7 @@ using BlazorApp_Act17.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorApp_Act17.Server.Migrations
 {
     [DbContext(typeof(BDProveedoresContext))]
-    partial class BDProveedoresContextModelSnapshot : ModelSnapshot
+    [Migration("20230530015840_Azure_Act6")]
+    partial class Azure_Act6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,7 +41,8 @@ namespace BlazorApp_Act17.Server.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("ProveedoresId")
+                    b.Property<int?>("ProveedoresId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.HasKey("Id");

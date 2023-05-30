@@ -8,10 +8,9 @@ namespace BlazorApp_Act17.Server.Data
         {
 
         }
-        public DbSet<Proveedores> Proveedores /*Nombre que se le asigna a la tabla de la base de datos*/ { get; set; }
-        public DbSet<Productos> Productos /*Nombre que se le asigna a la tabla de la base de datos*/ { get; set; }
+        public DbSet<Proveedores> Proveedores { get; set; } /*Nombre que se le asigna a la tabla de la base de datos*/ 
         public DbSet<Ventas> Ventas { get; set; }
-
+        public DbSet<Productos> Productos { get; set; } /*Nombre que se le asigna a la tabla de la base de datos*/ 
 
     }
 }

@@ -32,7 +32,7 @@ namespace BlazorApp_Act17.Shared.Clases
        // [Phone(ErrorMessage = "Numero Invalido")]
         public string? Telefono { get; set; }
 
-        [ForeignKey("ProveedoresId")]
+        //[ForeignKey("ProveedoresId")]
         public virtual ICollection<Productos>? Producto { get; set; }
 
 
