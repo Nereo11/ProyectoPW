@@ -33,14 +33,14 @@
     private async void Guardar()
 
     {
-        await _http.PostAsJsonAsync("api/producto", elProducto);
+        await _http.PostAsJsonAsync("api/productos", elProducto);
         navegar.NavigateTo("/Producto");
     }
 
     private async void Cancelar()
 
     {
-        await _http.PostAsJsonAsync("api/producto", elProducto);
+        await _http.PostAsJsonAsync("api/productos", elProducto);
         navegar.NavigateTo("/Producto");
     }
 }

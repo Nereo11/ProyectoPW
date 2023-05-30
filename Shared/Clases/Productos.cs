@@ -22,8 +22,9 @@ namespace BlazorApp_Act17.Shared.Clases
         public int Cantidad { get; set; }
 
         [Required(ErrorMessage = "El Proveedor no puede ser vació")]
+
         public int? ProveedoresId { get; set; }
-        public virtual Proveedores? Proveedores { get; set; }
+        public virtual Proveedores? Proveedor { get; set; }
 
         [JsonIgnore]
         public virtual ICollection<Ventas>? Ventas { get; set; }

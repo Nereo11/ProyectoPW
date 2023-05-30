@@ -20,9 +20,10 @@
     <thead>
         <tr>
             <th>ID</th>
-            <th>Nombre</th>
-            <th>Cantidad</th>
-            <th>Proveedor</th>
+            <th>Fecha</th>
+            <th>Cantidad Vendida</th>
+            <th>Precio de Venta</th>
+            <th>Acciones</th>
         </tr>
     </thead>
 
@@ -35,6 +36,10 @@
                 <td>@elVenta.Fecha</td>
                 <td>@elVenta.Cantidad_Vendida</td>
                 <td>@elVenta.Precio_Venta</td>
+
+               <!-- @{var nombresProductos = string.Join(", ", elVenta.Productos.Select(pedido => pedido.Nombre));}
+                <td class=" px-1">@nombresProductos</td>
+                    -->
 
                 <td>
                         <button class="btn-danger mx-3" @onclick="(()=>Eliminar(elVenta.Id))"><span class="oi oi-trash"></span></button>

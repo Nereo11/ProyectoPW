@@ -1,5 +1,59 @@
-﻿<h3>Editar_Producto</h3>
+﻿@page "/Producto/Editar_Producto/{Id:int}"
+@inject HttpClient _http
+@using BlazorApp_Act17.Shared.Clases
+@inject NavigationManager navegar
+
+<h3>Editar_Producto</h3>
+
+<EditForm Model="elProducto" OnValidSubmit="Modificar">
+    <DataAnnotationsValidator />
+
+    <div class="mb-3">
+        <label for="nombre" class="form-label">Nombre</label>
+        <InputText id="nombre" class="form-control" @bind-Value="elProducto.Nombre" />
+        <ValidationMessage For="(()=>elProducto.Nombre)" />
+    </div>
+    <div class="mb-3">
+        <label for="correo" class="form-label">Dirección</label>
+        <InputNumber class="form-control" id="direccion" @bind-Value="elProducto.Cantidad" />
+        <ValidationMessage For="(()=>elProducto.Cantidad)" />
+    </div>
+    <div class="mb-3">
+        <label for="correo" class="form-label">Correo</label>
+        <InputNumber class="form-control" id="correo" @bind-Value="elProducto.ProveedoresId" />
+        <ValidationMessage For="(()=>elProducto.ProveedoresId)" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+
+    <button type="button" @onclick="Cancelar" class="btn btn-primary">Cancelar</button>
+
+</EditForm>
 
 @code {
+    [Parameter]
+    public int Id { get; set; }
 
+    private Productos elProducto = new Productos();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        elProducto = await _http.GetFromJsonAsync<Productos>($"api/productos/{Id}");
+    }
+
+
+    private async void Modificar()
+
+    {
+        await _http.PutAsJsonAsync($"api/productos/{Id}", elProducto);
+        navegar.NavigateTo("/Producto");
+    }
+
+    private void Cancelar()
+
+    {
+        //await _http.PostAsJsonAsync("api/proveedores", elProveedor);
+        navegar.NavigateTo("/Producto");
+    }
 }

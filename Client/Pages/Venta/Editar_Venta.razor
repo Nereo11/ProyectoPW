@@ -1,41 +1,54 @@
-﻿@page "/Venta/Apartado_Ventas"
+﻿@page "/Venta/Editar_Venta/{Id:int}"
 @inject HttpClient _http
 @using BlazorApp_Act17.Shared.Clases
 @inject NavigationManager navegar
 
-<h3>Apartado_Ventas</h3>
-<EditForm Model="elVenta" OnValidSubmit="Guardar">
+<h3>Editar Venta</h3>
+<EditForm Model="elVenta" OnValidSubmit="Modificar">
     <DataAnnotationsValidator />
 
     <div class="mb-3">
-        <label for="nombre" class="form-label">Nombre</label>
+        <label for="nombre" class="form-label">Fecha</label>
         <InputDate id="nombre" class="form-control" @bind-Value="elVenta.Fecha" />
         <ValidationMessage For="(()=>elVenta.Fecha)" />
     </div>
     <div class="mb-3">
-        <label for="cantidad" class="form-label">Cantidad Vendida</label>
-        <InputNumber class="form-control" id="cantidad" @bind-Value="elVenta.Cantidad_Vendida" />
+        <label for="correo" class="form-label">Cantidad Vendida</label>
+        <InputNumber class="form-control" id="direccion" @bind-Value="elVenta.Cantidad_Vendida" />
         <ValidationMessage For="(()=>elVenta.Cantidad_Vendida)" />
     </div>
     <div class="mb-3">
-        <label for="telefono" class="form-label">Precio de Venta</label>
-        <InputNumber class="form-control" id="telefono" @bind-Value="elVenta.Precio_Venta" />
+        <label for="correo" class="form-label">Precio de Venta</label>
+        <InputNumber class="form-control" id="correo" @bind-Value="elVenta.Precio_Venta" />
         <ValidationMessage For="(()=>elVenta.Precio_Venta)" />
     </div>
     <div class="mb-3">
         <label for="telefono" class="form-label">Productos (id)</label>
         <InputText class="form-control" id="productos" @bind-Value="ProductosString" />
     </div>
-    <button type="submit" class="btn btn-primary">Guardar</button>
+
+    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+
     <button type="button" @onclick="Cancelar" class="btn btn-primary">Cancelar</button>
 
 </EditForm>
 
 @code {
-    private Ventas elVenta = new();
-    private string ProductosString { get; set; }
+    [Parameter]
+    public int Id { get; set; }
+    private string? ProductosString { get; set; }
+    private Ventas elVenta = new Ventas();
 
-    private async void Guardar()
+
+    protected override async Task OnInitializedAsync()
+    {
+        elVenta = await _http.GetFromJsonAsync<Ventas>($"api/ventas/{Id}");
+    }
+
+
+   
+
+    private async void Modificar()
     {
         if (!string.IsNullOrEmpty(ProductosString))
         {
@@ -49,14 +62,14 @@
             elVenta.Productos = productos.Where(p => elVenta.ProductosIds.Contains(p.Id)).ToList();
         }
 
-        await _http.PostAsJsonAsync("api/ventas", elVenta);
+        await _http.PutAsJsonAsync($"api/ventas/{Id}", elVenta);
         navegar.NavigateTo("/Venta");
     }
 
-    private async void Cancelar()
+    private void Cancelar()
 
     {
-        await _http.PostAsJsonAsync("api/ventas", elVenta);
+        //await _http.PostAsJsonAsync("api/proveedores", elProveedor);
         navegar.NavigateTo("/Venta");
     }
 }

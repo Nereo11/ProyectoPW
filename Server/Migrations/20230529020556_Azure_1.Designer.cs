@@ -4,6 +4,7 @@ using BlazorApp_Act17.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorApp_Act17.Server.Migrations
 {
     [DbContext(typeof(BDProveedoresContext))]
-    partial class BDProveedoresContextModelSnapshot : ModelSnapshot
+    [Migration("20230529020556_Azure_1")]
+    partial class Azure_1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -121,13 +124,13 @@ namespace BlazorApp_Act17.Server.Migrations
 
             modelBuilder.Entity("BlazorApp_Act17.Shared.Clases.Productos", b =>
                 {
-                    b.HasOne("BlazorApp_Act17.Shared.Clases.Proveedores", "Proveedor")
-                        .WithMany("Producto")
+                    b.HasOne("BlazorApp_Act17.Shared.Clases.Proveedores", "Proveedores")
+                        .WithMany("Productos")
                         .HasForeignKey("ProveedoresId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Proveedor");
+                    b.Navigation("Proveedores");
                 });
 
             modelBuilder.Entity("ProductosVentas", b =>
@@ -147,7 +150,7 @@ namespace BlazorApp_Act17.Server.Migrations
 
             modelBuilder.Entity("BlazorApp_Act17.Shared.Clases.Proveedores", b =>
                 {
-                    b.Navigation("Producto");
+                    b.Navigation("Productos");
                 });
 #pragma warning restore 612, 618
         }

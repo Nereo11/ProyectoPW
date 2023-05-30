@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -11,7 +12,8 @@ namespace BlazorApp_Act17.Shared.Clases
 {
     public class Proveedores
     {
-
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Required(ErrorMessage = "La Id es Obligatorio")]
         public int Id { get; set; }
 
@@ -30,7 +32,8 @@ namespace BlazorApp_Act17.Shared.Clases
        // [Phone(ErrorMessage = "Numero Invalido")]
         public string? Telefono { get; set; }
 
-        public virtual ICollection<Productos>? Productos { get; set; }
+        [ForeignKey("ProveedoresId")]
+        public virtual ICollection<Productos>? Producto { get; set; }
 
 
     }
